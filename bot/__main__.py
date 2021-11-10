@@ -38,6 +38,7 @@ from bot.helper.telegram_helper.message_utils import *
 
 from .helper.ext_utils.bot_utils import get_readable_file_size, get_readable_time
 from .helper.telegram_helper.filters import CustomFilters
+from .modules.rssfeeds import rss_init
 from .modules import (
     authorize,
     cancel_mirror,
@@ -50,9 +51,11 @@ from .modules import (
     mirror,
     mirror_status,
     reboot,
+    rssfeeds,
     shell,
     speedtest,
     search,
+    torrent_search,
     usage,
     watch,
     leech_settings,
@@ -91,8 +94,8 @@ def stats(update, context):
 
 def start(update, context):
     buttons = button_build.ButtonMaker()
-    buttons.buildbutton("Repo", "https://github.com/Ncode2014/re-cerminbot")
-    buttons.buildbutton("Group", "https://t.me/rumahmirorr")
+    buttons.buildbutton("👨🏼‍✈️ 𝐏𝐞𝐦𝐢𝐥𝐢𝐤 🙈", "https://www.instagram.com/mimi.peri")
+    buttons.buildbutton("🐊 𝐂𝐫𝐮𝐬𝐡 👩🏻", "https://www.instagram.com/zar4leola")
     reply_markup = InlineKeyboardMarkup(buttons.build_menu(2))
     if (
             CustomFilters.authorized_user(update)
@@ -106,7 +109,7 @@ Tipe /{BotCommands.HelpCommand} untuk mendapatkan daftar perintah yang tersedia
         sendMarkup(start_string, context.bot, update, reply_markup)
     else:
         sendMarkup(
-            "Ups! bukan pengguna Resmi.\nTolong deploy bot <b>re-cerminbot</b> buat kamu sendiri.",  # noqa: E501
+            "Ups! Tidak memiliki Otorisasi Resmi.\nTolong deploy bot <b>buat kamu sendiri yah</b> yang sabar ya bos.",  # noqa: E501
             context.bot,
             update,
             reply_markup,
@@ -115,7 +118,7 @@ Tipe /{BotCommands.HelpCommand} untuk mendapatkan daftar perintah yang tersedia
 
 def restart(update, context):
     restart_message = sendMessage(
-        "Mulai ulang, Harap tunggu!", context.bot, update
+        "Memulai ulang, Harap tunggu!", context.bot, update
     )  # noqa: E501
     # Save restart message object in order to reply to it after restarting
     with open(".restartmsg", "w") as f:
@@ -200,9 +203,9 @@ help_string_telegraph = f'''<br>
 <b>/{BotCommands.StatsCommand}</b>: Tampilkan Statistik Mesin The Bot diselenggarakan
 '''
 help = Telegraph(access_token=telegraph_token).create_page(
-    title='pencarian re-cerminbot',
-    author_name='re-cerminbot',
-    author_url='https://github.com/Ncode2014/re-cerminbot',
+    title='Perintah Rumah Awan',
+    author_name='Rumah Awan',
+    author_url='https://t.me/awanmirrorbot3',
     html_content=help_string_telegraph,
 )["path"]
 
@@ -228,6 +231,14 @@ help_string = f'''
 /{BotCommands.SpeedCommand}: Periksa kecepatan internet tuan rumah
 
 /{BotCommands.MediaInfoCommand}: Dapatkan info terperinci tentang Media Jawab (hanya untuk file telegram)
+
+/{BotCommands.ShellCommand}: Run commands in Shell (Only Owner)
+
+/{BotCommands.ExecHelpCommand}: Get help for Executor module (Only Owner)
+
+/{BotCommands.RssHelpCommand}:  Get help for RSS feeds module
+
+/{BotCommands.TsHelpCommand}: Get help for Torrent search module
 '''
 
 
@@ -276,11 +287,11 @@ def main():
     if os.path.isfile(".restartmsg"):
         with open(".restartmsg") as f:
             chat_id, msg_id = map(int, f)
-        bot.edit_message_text("Berhasil memulai kembali!", chat_id, msg_id)
+        bot.edit_message_text("Berhasil memulai kembali, Semua tugas dibatalkan!", chat_id, msg_id)
         os.remove(".restartmsg")
     elif OWNER_ID:
         try:
-            text = "<b>Bot Mulai ulang!</b>"
+            text = "<b>Bot Sudah Hidup Lagi!</b>"
             bot.sendMessage(chat_id=OWNER_ID, text=text, parse_mode=ParseMode.HTML)
             if AUTHORIZED_CHATS:
                 for i in AUTHORIZED_CHATS:
@@ -328,6 +339,7 @@ def main():
     updater.start_polling(drop_pending_updates=IGNORE_PENDING_REQUESTS)
     LOGGER.info("Bot Started!")
     signal.signal(signal.SIGINT, fs_utils.exit_clean_up)
+    rss_init()
 
 
 app.start()
