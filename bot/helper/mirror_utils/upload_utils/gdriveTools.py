@@ -606,9 +606,9 @@ class GoogleDriveHelper:
                     nxt_page += 1
                     
             Telegraph(access_token=telegraph_token).edit_page(path=self.path[prev_page],  # noqa: E501
-                                                              title='re-mirrorbot pencarian',  # noqa: E501
-                                                              author_name='re-mirrorbot',  # noqa: E501
-                                                              author_url='https://github.com/Ncode2014/re-cerminbot',
+                                                              title='Pencarian Rumah Awan',  # noqa: E501
+                                                              author_name='Rumah Awan',  # noqa: E501
+                                                              author_url='https://t.me/awanmirror3bot',
                                                               # noqa: E501
                                                               html_content=content)  # noqa: E501
         return
@@ -806,9 +806,9 @@ class GoogleDriveHelper:
 
         for content in self.telegraph_content:
             self.path.append(Telegraph(access_token=telegraph_token).create_page(  # noqa: E501
-                title='pencarian re-cerminbot',
-                author_name='re-cerminbot',
-                author_url='https://github.com/Ncode2014/re-cerminbot',
+                title='Pencarian Rumah Awan',
+                author_name='Rumah Awan',
+                author_url='https://t.me/awanmirror3bot',
                 html_content=content
             )['path'])
 
@@ -819,7 +819,7 @@ class GoogleDriveHelper:
         msg = f"<b>Ditemukan <code>{all_contents_count}</code> hasil untuk <code>{fileName}</code></b>"  # noqa: E501
         buttons = button_build.ButtonMaker()
         buttons.buildbutton(
-            "🔎 LIHAT", f"https://telegra.ph/{self.path[0]}")
+            "🔎 𝐂𝐞𝐤 𝐇𝐚𝐬𝐢𝐥𝐧𝐲𝐚 𝐁𝐨𝐬𝐬!", f"https://telegra.ph/{self.path[0]}")
 
         return msg, InlineKeyboardMarkup(buttons.build_menu(1))
 
