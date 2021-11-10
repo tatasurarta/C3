@@ -23,15 +23,15 @@ PAGE_NO = 1
 
 
 class MirrorStatus:
-    STATUS_UPLOADING = "Uploading...📤"
-    STATUS_DOWNLOADING = "Downloading...📥"
-    STATUS_CLONING = "Cloning...♻️"
-    STATUS_WAITING = "Queued...📝"
-    STATUS_FAILED = "Failed 🚫. Cleaning Download..."
-    STATUS_PAUSE = "Paused...⭕️"
-    STATUS_ARCHIVING = "Archiving...🔐"
-    STATUS_EXTRACTING = "Extracting...📂"
-    STATUS_SPLITTING = "Splitting...✂️"
+    STATUS_UPLOADING = "𝐒𝐞𝐝𝐚𝐧𝐠 𝐃𝐢 𝐔𝐩𝐥𝐨𝐚𝐝, 𝐒𝐚𝐛𝐚𝐫 𝐁𝐨𝐬𝐪𝐮...📤"
+    STATUS_DOWNLOADING = "𝐒𝐞𝐝𝐚𝐧𝐠 𝐃𝐢 𝐔𝐧𝐝𝐮𝐡, 𝐒𝐚𝐛𝐚𝐫 𝐁𝐨𝐬𝐪𝐮...📥"
+    STATUS_CLONING = "𝐒𝐞𝐝𝐚𝐧𝐠 𝐃𝐢 𝐂𝐥𝐨𝐧𝐞, 𝐒𝐚𝐛𝐚𝐫 𝐁𝐨𝐬𝐪𝐮...♻️"
+    STATUS_WAITING = "𝐌𝐚𝐬𝐢𝐡 𝐀𝐧𝐭𝐫𝐢, 𝐒𝐚𝐛𝐚𝐫 𝐁𝐨𝐬𝐪𝐮...📝"
+    STATUS_FAILED = "𝐅𝐢𝐥𝐞𝐦𝐮 𝐆𝐚𝐠𝐚𝐥. 𝐘𝐚𝐧𝐠 𝐒𝐚𝐛𝐚𝐫 𝐁𝐨𝐬𝐪𝐮 🚫. 𝐌𝐞𝐧𝐠𝐡𝐚𝐩𝐮𝐬 𝐅𝐢𝐥𝐞..."
+    STATUS_PAUSE = "𝐃𝐢𝐣𝐞𝐝𝐚...⭕️"
+    STATUS_ARCHIVING = "𝐒𝐞𝐝𝐚𝐧𝐠 𝐃𝐢 𝐀𝐫𝐬𝐢𝐩𝐤𝐚𝐧, 𝐒𝐚𝐛𝐚𝐫 𝐁𝐨𝐬𝐪𝐮...🔐"
+    STATUS_EXTRACTING = "𝐒𝐞𝐝𝐚𝐧𝐠 𝐃𝐢 𝐄𝐤𝐬𝐭𝐫𝐚𝐤, 𝐒𝐚𝐛𝐚𝐫 𝐁𝐨𝐬𝐪𝐮...📂"
+    STATUS_SPLITTING = "𝐒𝐞𝐝𝐚𝐧𝐠 𝐃𝐢 𝐏𝐢𝐬𝐚𝐡, 𝐒𝐚𝐛𝐚𝐫 𝐁𝐨𝐬𝐪𝐮...✂️"
 
 
 PROGRESS_MAX_SIZE = 100 // 8
@@ -145,33 +145,39 @@ def get_readable_message():  # sourcery no-metrics skip: remove-redundant-pass
             ]:
                 msg += f"\n{get_progress_bar_string(download)} {download.progress()}"
                 if download.status() == MirrorStatus.STATUS_CLONING:
-                    msg += f"\n<b>Kloning:</b> {get_readable_file_size(download.processed_bytes())} dari {download.size()} "
+                    msg += f"\n<b>♻️ 𝐊𝐥𝐨𝐧𝐢𝐧𝐠:</b> {get_readable_file_size(download.processed_bytes())} dari {download.size()} "
                 elif download.status() == MirrorStatus.STATUS_UPLOADING:
-                    msg += f"\n<b>Diunggah:</b> {get_readable_file_size(download.processed_bytes())} dari {download.size()}"
+                    msg += f"\n<b>🔺 𝐌𝐞𝐧𝐠𝐮𝐧𝐠𝐠𝐚𝐡:</b> {get_readable_file_size(download.processed_bytes())} dari {download.size()}"
                 else:
-                    msg += f"\n<b>Diunduh:</b> {get_readable_file_size(download.processed_bytes())} dari {download.size()}"
-                msg += f"\n<b>Kecepatan:</b> {download.speed()} <b>Kapan:</b> {download.eta()}"
+                    msg += f"\n<b>🔻 𝐌𝐞𝐧𝐠𝐮𝐧𝐝𝐮𝐡:</b> {get_readable_file_size(download.processed_bytes())} dari {download.size()}"
+                msg += f"\n<b>⚡ 𝐊𝐞𝐜𝐞𝐩𝐚𝐭𝐚𝐧:</b> {download.speed()} <b>Kapan:</b> {download.eta()}"
                 try:
-                    msg += f"\n<b>Seeders:</b> {download.aria_download().num_seeders}" \
-                           f" | <b>Peers:</b> {download.aria_download().connections}"
+                    msg += f"\n<b>🌱 𝐒𝐞𝐞𝐝𝐞𝐫𝐬:</b> {download.aria_download().num_seeders}" \
+                           f" | <b>❇️ 𝐏𝐞𝐞𝐫𝐬:</b> {download.aria_download().connections}"
                 except:
                     pass
                 try:
-                    msg += f"\n<b>Seeders:</b> {download.torrent_info().num_seeds}" \
-                           f" | <b>Leechers:</b> {download.torrent_info().num_leechs}" \
+                    msg += f"\n<b>👥 𝐏𝐞𝐧𝐠𝐠𝐮𝐧𝐚:</b> {download.message.from_user.first_name}" \
+                           f" | <b>⚠️ 𝐏𝐞𝐫𝐢𝐧𝐠𝐚𝐭𝐚𝐧:</b> /warn {download.message.from_user.id}"
+                    
+                except:
+                    pass
+                try:
+                    msg += f"\n<b>🌱 𝐒𝐞𝐞𝐝𝐞𝐫𝐬:</b> {download.torrent_info().num_seeds}" \
+                           f" | <b>💣 𝐋𝐞𝐞𝐜𝐡𝐞𝐫𝐬:</b> {download.torrent_info().num_leechs}" \
 
                 except:
                     pass
-                msg += f"\n<b>Pengguna:</b> <a href='tg://user?id={download.message.from_user.id}'>{download.message.from_user.first_name}</a>"
-                msg += f"\n<b>Untuk membatalkan:</b> <code>/{BotCommands.CancelMirror} {download.gid()}</code>"
+                msg += f"\n<b>👥 𝐏𝐞𝐧𝐠𝐠𝐮𝐧𝐚:</b> <a href='tg://user?id={download.message.from_user.id}'>{download.message.from_user.first_name}</a>"
+                msg += f"\n<b>🧯 𝐔𝐧𝐭𝐮𝐤 𝐦𝐞𝐦𝐛𝐚𝐭𝐚𝐥𝐤𝐚𝐧 🧯:</b> <code>/{BotCommands.CancelMirror} {download.gid()}</code>"
             msg += "\n\n"
             if STATUS_LIMIT is not None and index == STATUS_LIMIT:
                 break
         if STATUS_LIMIT is not None and dick_no > STATUS_LIMIT:
             msg += f"<b>Halaman:</b> {PAGE_NO}/{pages} | <b>Tugas:</b> {dick_no}\n"
             buttons = button_build.ButtonMaker()
-            buttons.sbutton("Sebelumnya", "pre")
-            buttons.sbutton("Selanjutnya", "nex")
+            buttons.sbutton("👈🏼", "pre")
+            buttons.sbutton("👉🏼", "nex")
             button = InlineKeyboardMarkup(buttons.build_menu(2))
             return msg, button
         return msg, ""
