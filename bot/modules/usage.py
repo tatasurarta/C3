@@ -32,7 +32,6 @@ def dyno_usage(update, context):
         "Accept": "application/vnd.heroku+json; version=3.account-quotas",
     }
     path = "/accounts/" + user_id + "/actions/get-quota"
-    epath = "/users/" + user_id
     session = requests.Session()
     with session as ses:
         with ses.get(heroku_api + path, headers=headers) as r:
@@ -46,10 +45,7 @@ def dyno_usage(update, context):
             hours = math.floor(minutes_remain / 60)
             minutes = math.floor(minutes_remain % 60)
             day = math.floor(hours / 24)
-            """Account Email."""
-        with ses.get(heroku_api + epath, headers=headers) as rp:
-            resultan = rp.json()
-            email = resultan["email"]
+            
             """App Quota."""
             Apps = result["apps"]
             for apps in Apps:
@@ -73,8 +69,6 @@ def dyno_usage(update, context):
                 f"• <code>{hours}</code> <b>Jam dan</b> <code>{minutes}</code> <b>Menit - {quota_percent}%</b>\n\n"
                 "<b>Kapan Kartu mu mati:</b>\n"
                 f"• <code>{day}</code> <b>hari</b>\n\n"
-                "<b>Email kamu Sekarang:</b>\n"
-                f"• <code>{email}</code>", context.bot, update)
             return True
 
 
