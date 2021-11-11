@@ -63,14 +63,14 @@ def dyno_usage(update, context):
             AppMinutes = math.floor(AppQuotaUsed % 60)
 
             sendMessage(
-                f"<b>Kuota yang terpakai untuk</b> <code>{app.name}</code>:\n"
-                f"• <code>{AppHours}</code> <b>Jam dan</b> <code>{AppMinutes}</code> <b>Menit - {AppPercent}%</b>\n\n"
-                "<b>Sisa kuota buat bulan ini:</b>\n"
-                f"• <code>{hours}</code> <b>Jam dan</b> <code>{minutes}</code> <b>Menit - {quota_percent}%</b>\n\n"
-                "<b>Kapan Kartu mu mati:</b>\n"
-                f"• <code>{day}</code> <b>hari</b>\n\n"
+                f"<b>⛽️ 𝐃𝐲𝐧𝐨 𝐲𝐚𝐧𝐠 𝐭𝐞𝐫𝐩𝐚𝐤𝐚𝐢 𝐮𝐧𝐭𝐮𝐤 💻</b> <code>{app.name}</code>:\n"
+                f"• <code>{AppHours}</code> <b>𝐉𝐚𝐦</b> <code>{AppMinutes}</code> <b>𝐌𝐞𝐧𝐢𝐭 - {AppPercent}%</b>\n\n"
+                "<b>💻 𝐒𝐢𝐬𝐚 𝐃𝐲𝐧𝐨 𝐮𝐧𝐭𝐮𝐤 𝐛𝐮𝐥𝐚𝐧 𝐢𝐧𝐢 ⏱:</b>\n"
+                f"• <code>{hours}</code> <b>𝐉𝐚𝐦</b> <code>{minutes}</code> <b>𝐌𝐞𝐧𝐢𝐭 - {quota_percent}%</b>\n\n"
+                "<b>💻 𝐊𝐚𝐩𝐚𝐧 𝐃𝐲𝐧𝐨 𝐤𝐚𝐦𝐮 𝐦𝐚𝐭𝐢 ⛽️:</b>\n"
+                f"• <code>{day}</code> <b>𝐇𝐚𝐫𝐢</b>\n\n"
+            )
             return True
-
 
 dyno_usage_handler = CommandHandler(
     command=BotCommands.UsageCommand,
