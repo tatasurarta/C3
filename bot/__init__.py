@@ -366,6 +366,13 @@ except KeyError:
 
 IGNORE_PENDING_REQUESTS = False
 try:
+    CHAT_ID = getConfig('CHAT_ID')
+    DELAY = int(getConfig('DELAY'))
+    INIT_FEEDS = getConfig('INIT_FEEDS')
+    CUSTOM_MESSAGES = getConfig('CUSTOM_MESSAGES')        
+except:
+    pass 
+try:
     IGNORE_PENDING_REQUESTS = getConfig("IGNORE_PENDING_REQUESTS")
     IGNORE_PENDING_REQUESTS = IGNORE_PENDING_REQUESTS.lower() == 'true'
 except KeyError:
