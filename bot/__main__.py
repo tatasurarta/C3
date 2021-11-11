@@ -280,6 +280,7 @@ botcmds = [
 
 
 def main():
+    current = now_asia.strftime(format)
     fs_utils.start_cleanup()
     if IS_VPS:
         asyncio.get_event_loop().run_until_complete(start_server_async(PORT))
