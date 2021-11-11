@@ -63,6 +63,14 @@ from .modules import (
 
 now = datetime.now(pytz.timezone("Asia/Jakarta"))
 
+# Current time in UTC
+now_utc = datetime.now(timezone('UTC'))
+print(now_utc.strftime(format))
+
+# Convert to Asia/Jakarta time zone
+now_asia = now_utc.astimezone(timezone('Asia/Jakarta'))
+print(now_asia.strftime(format))
+
 
 def stats(update, context):
     currentTime = get_readable_time(time.time() - botStartTime)
