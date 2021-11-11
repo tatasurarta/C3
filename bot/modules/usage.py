@@ -67,8 +67,8 @@ def dyno_usage(update, context):
                 f"• <code>{AppHours}</code> <b>𝐉𝐚𝐦</b> <code>{AppMinutes}</code> <b>𝐌𝐞𝐧𝐢𝐭 - {AppPercent}%</b>\n\n"
                 "<b>💻 𝐒𝐢𝐬𝐚 𝐃𝐲𝐧𝐨 𝐮𝐧𝐭𝐮𝐤 𝐛𝐮𝐥𝐚𝐧 𝐢𝐧𝐢 ⏱:</b>\n"
                 f"• <code>{hours}</code> <b>𝐉𝐚𝐦</b> <code>{minutes}</code> <b>𝐌𝐞𝐧𝐢𝐭 - {quota_percent}%</b>\n\n"
-                "<b>💻 𝐊𝐚𝐩𝐚𝐧 𝐃𝐲𝐧𝐨 𝐤𝐚𝐦𝐮 𝐦𝐚𝐭𝐢 ⛽️:</b>\n"
-                f"• <code>{day}</code> <b>𝐇𝐚𝐫𝐢</b>\n\n", context.bot, update)
+                "<b>💻 𝐃𝐲𝐧𝐨 𝐤𝐚𝐦𝐮 𝐚𝐤𝐚𝐧 𝐦𝐚𝐭𝐢 ⛽️:</b>\n"
+                f"• <code>{day}</code> <b>𝐇𝐚𝐫𝐢 𝐋𝐚𝐠𝐢</b>\n\n", context.bot, update)
             return True
 
 dyno_usage_handler = CommandHandler(
