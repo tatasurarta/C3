@@ -77,15 +77,15 @@ def stats(update, context):
     memory = psutil.virtual_memory().percent
     disk = psutil.disk_usage("/").percent
     stats = (
-        f"<b>Bot berjalan:</b> <code>{currentTime}</code>\n"
-        f"<b>Ruang Penyimpnan total:</b> <code>{total}</code>\n"
-        f"<b>Digunakan:</b> <code>{used}</code> "
-        f"<b>Bebas:</b> <code>{free}</code>\n\n"
-        f"<b>Upload:</b> <code>{sent}</code>\n"
-        f"<b>Download:</b> <code>{recv}</code>\n\n"
-        f"<b>CPU:</b> <code>{cpuUsage}%</code> "
-        f"<b>RAM:</b> <code>{memory}%</code> "
-        f"<b>HDD:</b> <code>{disk}%</code>"
+        f"<b>👴🏻 𝐖𝐚𝐤𝐭𝐮 𝐀𝐤𝐭𝐢𝐟 𝐁𝐨𝐭 ⌚️:</b> <code>{currentTime}</code>\n"
+        f"<b>💾 𝐓𝐨𝐭𝐚𝐥 𝐑𝐮𝐚𝐧𝐠 𝐃𝐢𝐬𝐤 💾:</b> <code>{total}</code>\n"
+        f"<b>⌛️ 𝐓𝐞𝐫𝐩𝐚𝐤𝐚𝐢 ⌛️:</b> <code>{used}</code> "
+        f"<b>🔋 𝐊𝐨𝐬𝐨𝐧𝐠 🔋:</b> <code>{free}</code>\n\n"
+        f"<b>🔺 𝐔𝐧𝐠𝐠𝐚𝐡𝐚𝐧:</b> <code>{sent}</code>\n"
+        f"<b>🔻 𝐔𝐧𝐝𝐮𝐡𝐚𝐧:</b> <code>{recv}</code>\n\n"
+        f"<b>🖥️ 𝐂𝐏𝐔:</b> <code>{cpuUsage}%</code> "
+        f"<b>🧭 𝐑𝐀𝐌:</b> <code>{memory}%</code> "
+        f"<b>🖫 𝐒𝐒𝐃:</b> <code>{disk}%</code>"
     )
     update.effective_message.reply_photo(
         IMAGE_URL, stats, parse_mode=ParseMode.HTML
@@ -109,7 +109,7 @@ Tipe /{BotCommands.HelpCommand} untuk mendapatkan daftar perintah yang tersedia
         sendMarkup(start_string, context.bot, update, reply_markup)
     else:
         sendMarkup(
-            "Ups! Tidak memiliki Otorisasi Resmi.\nTolong deploy bot <b>buat kamu sendiri yah</b> yang sabar ya bos.",  # noqa: E501
+            "𝐔𝐩𝐬! 𝐓𝐢𝐝𝐚𝐤 𝐌𝐞𝐦𝐢𝐥𝐢𝐤𝐢 𝐎𝐭𝐨𝐫𝐢𝐬𝐚𝐬𝐢 𝐑𝐞𝐬𝐦𝐢.\n𝐓𝐨𝐥𝐨𝐧𝐠 𝐁𝐮𝐚𝐭 𝐒𝐞𝐧𝐝𝐢𝐫𝐢 <b>𝐌𝐢𝐫𝐫𝐨𝐫 𝐁𝐨𝐭 𝐧𝐲𝐚</b> 𝐘𝐚𝐧𝐠 𝐒𝐚𝐛𝐚𝐫 𝐲𝐚 𝐁𝐨𝐬.",  # noqa: E501
             context.bot,
             update,
             reply_markup,
@@ -118,7 +118,7 @@ Tipe /{BotCommands.HelpCommand} untuk mendapatkan daftar perintah yang tersedia
 
 def restart(update, context):
     restart_message = sendMessage(
-        "Memulai ulang, Harap tunggu!", context.bot, update
+        "𝐌𝐞𝐦𝐮𝐥𝐚𝐢 𝐮𝐥𝐚𝐧𝐠, 𝐇𝐚𝐫𝐚𝐩 𝐭𝐮𝐧𝐠𝐠𝐮!", context.bot, update
     )  # noqa: E501
     # Save restart message object in order to reply to it after restarting
     with open(".restartmsg", "w") as f:
@@ -205,7 +205,7 @@ help_string_telegraph = f'''<br>
 help = Telegraph(access_token=telegraph_token).create_page(
     title='Perintah Rumah Awan',
     author_name='Rumah Awan',
-    author_url='https://t.me/awanmirrorbot3',
+    author_url='https://t.me/awanmirror3bot',
     html_content=help_string_telegraph,
 )["path"]
 
@@ -287,11 +287,11 @@ def main():
     if os.path.isfile(".restartmsg"):
         with open(".restartmsg") as f:
             chat_id, msg_id = map(int, f)
-        bot.edit_message_text("Berhasil memulai kembali, Semua tugas dibatalkan!", chat_id, msg_id)
+        bot.edit_message_text("𝐁𝐞𝐫𝐡𝐚𝐬𝐢𝐥 𝐦𝐞𝐦𝐮𝐥𝐚𝐢 𝐮𝐥𝐚𝐧𝐠, 𝐒𝐞𝐦𝐮𝐚 𝐓𝐮𝐠𝐚𝐬 𝐃𝐢𝐛𝐚𝐭𝐚𝐥𝐤𝐚𝐧! 𝑷𝒂𝒅𝒂 {current}", chat_id, msg_id)
         os.remove(".restartmsg")
     elif OWNER_ID:
         try:
-            text = "<b>Bot Sudah Hidup Lagi!</b>"
+            text = "<b>Bot Sudah Hidup Lagi! 𝑷𝒂𝒅𝒂 {current}</b>"
             bot.sendMessage(chat_id=OWNER_ID, text=text, parse_mode=ParseMode.HTML)
             if AUTHORIZED_CHATS:
                 for i in AUTHORIZED_CHATS:
