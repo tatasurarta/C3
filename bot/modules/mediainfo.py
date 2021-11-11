@@ -2,8 +2,9 @@
 # Copyright (C) 2020 BY - GitHub.com/code-rgb [TG - @deleteduser420]
 # All rights reserved.
 
+import os
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from bot import app
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper import post_to_telegraph, runcmd, safe_filename
@@ -40,7 +41,9 @@ async def mediainfo(client, message):
     media_type = str(type(x_media)).split("'")[1]
     file_path = safe_filename(await reply.download())
     output_ = await runcmd(f'mediainfo "{file_path}"')
-    out = output_[0] if len(output_) != 0 else None
+    out = None
+    if len(output_) != 0:
+         out = output_[0]
     body_text = f"""
 <h2>JSON</h2>
 <pre>{x_media}</pre>
@@ -52,7 +55,6 @@ async def mediainfo(client, message):
     title = 're-mirrorbot Mediainfo'
     text_ = media_type.split(".")[-1].upper()
     link = post_to_telegraph(title, body_text)
-    markup = InlineKeyboardMarkup(
-        [[InlineKeyboardButton(text=text_, url=link)]]
-    )
-    await process.edit_text("ℹ️ <b>INFO MEDIA</b>", reply_markup=markup)
+    
+    markup = InlineKeyboardMarkup([[InlineKeyboardButton(text=text_, url=link)]])
+    await process.edit_text("ℹ️ <b>M𝐌𝐄𝐃𝐈𝐀 𝐈𝐍𝐅𝐎 𝐁𝐮𝐚𝐭 @{message.from_user.username} </b>", reply_markup=markup)
