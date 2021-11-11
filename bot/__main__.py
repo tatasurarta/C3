@@ -66,7 +66,7 @@ now = datetime.now(pytz.timezone("Asia/Jakarta"))
 
 def stats(update, context):
     currentTime = get_readable_time(time.time() - botStartTime)
-    current = now.strftime("%Y/%m/%d %I:%M:%S %p")
+    current = now.strftime("%A, %d %B %Y %H:%M:%S")
     total, used, free = shutil.disk_usage(".")
     total = get_readable_file_size(total)
     used = get_readable_file_size(used)
@@ -280,7 +280,7 @@ botcmds = [
 
 
 def main():
-    current = now.strftime("%Y/%m/%d %I:%M:%S %p")
+    current = now.strftime("%A, %d %B %Y %H:%M:%S")
     fs_utils.start_cleanup()
     if IS_VPS:
         asyncio.get_event_loop().run_until_complete(start_server_async(PORT))
@@ -289,13 +289,13 @@ def main():
         with open(".restartmsg") as f:
             chat_id, msg_id = map(int, f)
         bot.edit_message_text(
-            f'🔛 𝐁𝐞𝐫𝐡𝐚𝐬𝐢𝐥 𝐦𝐞𝐦𝐮𝐥𝐚𝐢 𝐮𝐥𝐚𝐧𝐠, 𝐒𝐞𝐦𝐮𝐚 𝐓𝐮𝐠𝐚𝐬 𝐃𝐢𝐛𝐚𝐭𝐚𝐥𝐤𝐚𝐧!\n'
-            f'🧭 {current}', chat_id, msg_id
+            f'🟢 𝐁𝐞𝐫𝐡𝐚𝐬𝐢𝐥 𝐦𝐞𝐦𝐮𝐥𝐚𝐢 𝐮𝐥𝐚𝐧𝐠, 𝐒𝐞𝐦𝐮𝐚 𝐓𝐮𝐠𝐚𝐬 𝐃𝐢𝐛𝐚𝐭𝐚𝐥𝐤𝐚𝐧!\n'
+            f'⏰ {current}', chat_id, msg_id
         )
         os.remove(".restartmsg")
     elif OWNER_ID:
         try:
-            text = f'🔛 Bot Sudah Hidup Lagi!\n 🧭 {current}'
+            text = f'🟢 Bot Sudah Hidup Lagi!\n ⏰ {current}'
             bot.sendMessage(chat_id=OWNER_ID, text=text, parse_mode=ParseMode.HTML)
             if AUTHORIZED_CHATS:
                 for i in AUTHORIZED_CHATS:
