@@ -46,9 +46,35 @@ if CONFIG_FILE_URL is not None:
     else:
         logging.error(f"Failed to download config.env {res.status_code}")
 
-load_dotenv('config.env')
+load_dotenv('config.env', override=True')
 
-SERVER_PORT = os.environ.get('SERVER_PORT', None)
+            
+def getConfig(name: str):
+    return os.environ[name]
+
+try:
+    NETRC_URL = getConfig('NETRC_URL')
+    if len(NETRC_URL) == 0:
+        raise KeyError
+    try:
+        res = requests.get(NETRC_URL)
+        if res.status_code == 200:
+            with open('.netrc', 'wb+') as f:
+                f.write(res.content)
+                f.close()
+        else:
+            logging.error(f"Failed to download .netrc {res.status_code}")
+    except RequestException as e:
+        logging.error(str(e))
+except KeyError:
+    pass
+try:
+    SERVER_PORT = getConfig('SERVER_PORT')
+    if len(SERVER_PORT) == 0:
+        raise KeyError
+except KeyError:
+    SERVER_PORT = 80
+            
 PORT = os.environ.get('PORT', SERVER_PORT)
 web = subprocess.Popen(
     [f"gunicorn wserver:start_server --bind 0.0.0.0:{PORT} --worker-class aiohttp.GunicornWebWorker"], shell=True)
@@ -419,6 +445,14 @@ try:
 except KeyError:
     CUSTOM_FILENAME = None
 try:
+    PHPSESSID = getConfig('PHPSESSID')
+    CRYPT = getConfig('CRYPT')
+    if len(PHPSESSID) == 0 or len(CRYPT) == 0:
+        raise KeyError
+except KeyError:
+    PHPSESSID = None
+    CRYPT = None
+try:
     RECURSIVE_SEARCH = getConfig('RECURSIVE_SEARCH')
     RECURSIVE_SEARCH = RECURSIVE_SEARCH.lower() == 'true'
 except KeyError:
@@ -482,6 +516,22 @@ try:
         else:
             logging.error(f"Failed to download drive_folder {res.status_code}")
             raise KeyError
+except KeyError:
+    pass
+try:
+    YT_COOKIES_URL = getConfig('YT_COOKIES_URL')
+    if len(YT_COOKIES_URL) == 0:
+        raise KeyError
+    try:
+        res = requests.get(YT_COOKIES_URL)
+        if res.status_code == 200:
+            with open('cookies.txt', 'wb+') as f:
+                f.write(res.content)
+                f.close()
+        else:
+            logging.error(f"Failed to download cookies.txt, link got HTTP response: {res.status_code}")
+    except RequestException as e:
+        logging.error(str(e))
 except KeyError:
     pass
 
