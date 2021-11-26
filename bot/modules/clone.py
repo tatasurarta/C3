@@ -12,14 +12,12 @@ from bot import (
     download_dict,
     download_dict_lock,
 )
-from bot.helper.ext_utils.bot_utils import new_thread, get_readable_file_size, is_gdrive_link, is_gdtot_link
+from bot.helper.ext_utils.bot_utils import new_thread, get_readable_file_size
 from bot.helper.mirror_utils.status_utils.clone_status import CloneStatus
 from bot.helper.mirror_utils.upload_utils import gdriveTools
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import *
-from bot.helper.mirror_utils.download_utils.direct_link_generator import gdtot
-from bot.helper.ext_utils.exceptions import DirectDownloadLinkException
 
 
 @new_thread
@@ -33,18 +31,7 @@ def cloneNode(update, context):
         link = reply_text.split('\n')[0]
     else:
         link = None
-    if is_gdtot_link(link):
-        try:
-            link = gdtot(link)
-        except DirectDownloadLinkException as e:
-            return sendMessage(str(e), context.bot, update)
     if link is not None:
-        gd = gdriveTools.GoogleDriveHelper()
-        res, size, name, files = gd.helper(link)
-        if res != "":
-            sendMessage(res, context.bot, update)
-            return
-    if is_gdrive_link(link):
         gd = gdriveTools.GoogleDriveHelper()
         res, size, name, files = gd.helper(link)
         if res != "":
@@ -104,7 +91,7 @@ def cloneNode(update, context):
             sendMarkup(result + cc, context.bot, update, button)
     else:
         sendMessage(
-            "Berikan Tautan yang Dapat Dibagikan G-Drive atau gdtot link ke Klon.", context.bot, update
+            "Berikan Tautan yang Dapat Dibagikan G-Drive ke Klon.", context.bot, update
         )
 
 
