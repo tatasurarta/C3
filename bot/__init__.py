@@ -365,7 +365,11 @@ try:
 except KeyError:
     IMAGE_URL = 'https://telegra.ph/file/db03910496f06094f1f7a.jpg'
 
-IGNORE_PENDING_REQUESTS = False
+try:
+    IGNORE_PENDING_REQUESTS = getConfig("IGNORE_PENDING_REQUESTS")
+    IGNORE_PENDING_REQUESTS = IGNORE_PENDING_REQUESTS.lower() == 'true'
+except KeyError:
+    IGNORE_PENDING_REQUESTS = False
 try:
     CHAT_ID = getConfig('CHAT_ID')
     DELAY = int(getConfig('DELAY'))
@@ -373,11 +377,7 @@ try:
     CUSTOM_MESSAGES = getConfig('CUSTOM_MESSAGES')        
 except:
     pass 
-try:
-    IGNORE_PENDING_REQUESTS = getConfig("IGNORE_PENDING_REQUESTS")
-    IGNORE_PENDING_REQUESTS = IGNORE_PENDING_REQUESTS.lower() == 'true'
-except KeyError:
-    pass
+
 try:
     FINISHED_PROGRESS_STR = getConfig('FINISHED_PROGRESS_STR')
     if len(FINISHED_PROGRESS_STR) == 0:
