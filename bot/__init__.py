@@ -46,7 +46,7 @@ if CONFIG_FILE_URL is not None:
     else:
         logging.error(f"Failed to download config.env {res.status_code}")
 
-load_dotenv('config.env', override=True')
+load_dotenv('config.env', override=True)
 
             
 SERVER_PORT = os.environ.get('SERVER_PORT', None)
