@@ -520,18 +520,3 @@ def dropbox1(url: str) -> str:
 def dropbox2(url: str) -> str:
     """ Dropbox Downloader Folder """
     return url.replace("?dl=0", "?dl=1")
-
-
-def useragent():
-    """
-    useragent random setter
-    """
-    useragents = BeautifulSoup(
-        requests.get(
-            "https://developers.whatismybrowser.com/"
-            "useragents/explore/operating_system_name/android/"
-        ).content,
-        "lxml",
-    ).findAll("td", {"class": "useragent"})
-    user_agent = choice(useragents)
-    return user_agent.text
