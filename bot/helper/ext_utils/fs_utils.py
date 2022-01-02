@@ -162,7 +162,8 @@ def take_ss(video_file):
     if duration == 0:
         duration = 3
     duration = duration // 2
-    subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-ss", str(duration),
+    try:
+        subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-ss", str(duration),
                     "-i", video_file, "-vframes", "1", des_dir])
     except:
         return None
