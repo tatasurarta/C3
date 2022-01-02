@@ -1,59 +1,24 @@
-# Implement By - @anasty17 (https://github.com/SlamDevs/slam-mirrorbot/commit/d888a1e7237f4633c066f7c2bbfba030b83ad616)
-# (c) https://github.com/SlamDevs/slam-mirrorbot
-# All rights reserved
-
-import logging
 import os
+import logging
 import time
+import threading
 
 from pyrogram.errors import FloodWait
+from PIL import Image
 
-from bot import (
-    AS_DOC_USERS,
-    AS_DOCUMENT,
-    AS_MEDIA_USERS,
-    CUSTOM_FILENAME,
-    DOWNLOAD_DIR,
-    app,
-)
-from bot.helper.ext_utils.fs_utils import get_media_info, take_ss
+from bot import app, DOWNLOAD_DIR, AS_DOCUMENT, AS_DOC_USERS, AS_MEDIA_USERS, CUSTOM_FILENAME
+from bot.helper.ext_utils.fs_utils import take_ss, get_media_info, get_video_resolution, get_path_size
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger("pyrogram").setLevel(logging.ERROR)
 
 VIDEO_SUFFIXES = ("MKV", "MP4", "MOV", "WMV", "3GP", "MPG", "WEBM", "AVI", "FLV", "M4V")
-AUDIO_SUFFIXES = (
-    "MP3",
-    "M4A",
-    "M4B",
-    "FLAC",
-    "WAV",
-    "AIF",
-    "OGG",
-    "AAC",
-    "DTS",
-    "MID",
-    "AMR",
-    "MKA",
-)
-IMAGE_SUFFIXES = (
-    "JPG",
-    "JPX",
-    "PNG",
-    "GIF",
-    "WEBP",
-    "CR2",
-    "TIF",
-    "BMP",
-    "JXR",
-    "PSD",
-    "ICO",
-    "HEIC",
-    "JPEG",
-)
+AUDIO_SUFFIXES = ("MP3", "M4A", "M4B", "FLAC", "WAV", "AIF", "OGG", "AAC", "DTS", "MID", "AMR", "MKA")
+IMAGE_SUFFIXES = ("JPG", "JPX", "PNG", "GIF", "WEBP", "CR2", "TIF", "BMP", "JXR", "PSD", "ICO", "HEIC", "JPEG")
 
 
 class TgUploader:
+    
     def __init__(self, name=None, listener=None):
         self.__listener = listener
         self.name = name
@@ -62,6 +27,7 @@ class TgUploader:
         self.uploaded_bytes = 0
         self.last_uploaded = 0
         self.start_time = time.time()
+        self.__resource_lock = threading.RLock()
         self.is_cancelled = False
         self.chat_id = listener.message.chat.id
         self.message_id = listener.uid
@@ -69,6 +35,9 @@ class TgUploader:
         self.as_doc = AS_DOCUMENT
         self.thumb = f"Thumbnails/{self.user_id}.jpg"
         self.sent_msg = self.__app.get_messages(self.chat_id, self.message_id)
+        self.msgs_dict = {}
+        self.corrupted = 0
+        self.user_settings()
 
     def upload(self):
         msgs_dict = {}
@@ -114,49 +83,49 @@ class TgUploader:
                     if thumb is None:
                         thumb = take_ss(up_path)
                         if self.is_cancelled:
+                            if self.thumb is None and thumb is not None and os.path.lexists(thumb):
                             os.remove(thumb)
                             return
+                    if thumb is not None:
+                        img = Image.open(thumb)
+                        width, height = img.size
+                    else:
+                        width, height = get_video_resolution(up_path)
                     if not filee.upper().endswith(("MKV", "MP4")):
                         filee = os.path.splitext(filee)[0] + ".mp4"
                         new_path = os.path.join(dirpath, filee)
                         os.rename(up_path, new_path)
                         up_path = new_path
-                    self.sent_msg = self.sent_msg.reply_video(
-                        video=up_path,
-                        quote=True,
-                        caption=cap_mono,
-                        parse_mode="html",
-                        duration=duration,
-                        width=width,
-                        height=height,
-                        thumb=thumb,
-                        supports_streaming=True,
-                        disable_notification=True,
-                        progress=self.upload_progress,
-                    )
+                    self.sent_msg = self.sent_msg.reply_video(video=up_path,
+                                                            quote=True,
+                                                            caption=cap_mono,
+                                                            parse_mode="html",
+                                                            duration=duration,
+                                                            width=width,
+                                                            height=height,
+                                                            thumb=thumb,
+                                                            supports_streaming=True,
+                                                            disable_notification=True,
+                                                            progress=self.upload_progress)
                 elif filee.upper().endswith(AUDIO_SUFFIXES):
                     duration, artist, title = get_media_info(up_path)
-                    self.sent_msg = self.sent_msg.reply_audio(
-                        audio=up_path,
-                        quote=True,
-                        caption=cap_mono,
-                        parse_mode="html",
-                        duration=duration,
-                        performer=artist,
-                        title=title,
-                        thumb=thumb,
-                        disable_notification=True,
-                        progress=self.upload_progress,
-                    )
+                    self.sent_msg = self.sent_msg.reply_audio(audio=up_path,
+                                                            quote=True,
+                                                            caption=cap_mono,
+                                                            parse_mode="html",
+                                                            duration=duration,
+                                                            performer=artist,
+                                                            title=title,
+                                                            thumb=thumb,
+                                                            disable_notification=True,
+                                                            progress=self.upload_progress)
                 elif filee.upper().endswith(IMAGE_SUFFIXES):
-                    self.sent_msg = self.sent_msg.reply_photo(
-                        photo=up_path,
-                        quote=True,
-                        caption=cap_mono,
-                        parse_mode="html",
-                        disable_notification=True,
-                        progress=self.upload_progress,
-                    )
+                    self.sent_msg = self.sent_msg.reply_photo(photo=up_path,
+                                                            quote=True,
+                                                            caption=cap_mono,
+                                                            parse_mode="html",
+                                                            disable_notification=True,
+                                                            progress=self.upload_progress)
                 else:
                     notMedia = True
             if self.as_doc or notMedia:
@@ -165,15 +134,13 @@ class TgUploader:
                     if self.is_cancelled:
                         os.remove(thumb)
                         return
-                self.sent_msg = self.sent_msg.reply_document(
-                    document=up_path,
-                    quote=True,
-                    thumb=thumb,
-                    caption=cap_mono,
-                    parse_mode="html",
-                    disable_notification=True,
-                    progress=self.upload_progress,
-                )
+                self.sent_msg = self.sent_msg.reply_document(document=up_path,
+                                                            quote=True,
+                                                            thumb=thumb,
+                                                            caption=cap_mono,
+                                                            parse_mode="html",
+                                                            disable_notification=True,
+                                                            progress=self.upload_progress)
         except FloodWait as f:
             LOGGER.info(f)
             time.sleep(f.x)
@@ -210,5 +177,5 @@ class TgUploader:
 
     def cancel_download(self):
         self.is_cancelled = True
-        LOGGER.info(f"Cancelling Upload: {self.name}")
+        LOGGER.info(f"Membatalkan unggahan: {self.name}")
         self.__listener.onUploadError("unggahan Anda telah dihentikan!")
