@@ -164,9 +164,6 @@ def take_ss(video_file):
     duration = duration // 2
     subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-ss", str(duration),
                     "-i", video_file, "-vframes", "1", des_dir])
-    if not os.path.lexists(des_dir):
-        return None
-
     except:
         return None
 
