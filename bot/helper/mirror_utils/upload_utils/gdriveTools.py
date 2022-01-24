@@ -173,7 +173,7 @@ class GoogleDriveHelper:
         # File body description
         file_metadata = {
             'name': file_name,
-            'description': 'Uploaded by re-mirrorbot',
+            'description': '𝚄𝙿𝙻𝙾𝙰𝙳𝙴𝙳 𝚄𝚂𝙸𝙽𝙶 𝙰𝚆𝙰𝙽 𝙼𝙸𝚁𝚁𝙾𝚁 𝙱𝙾𝚃',
             'mimeType': mime_type,
         }
         try:
@@ -500,7 +500,7 @@ class GoogleDriveHelper:
     def create_directory(self, directory_name, parent_id):
         file_metadata = {
             "name": directory_name,
-            "description": "Uploaded by re-cerminbot",
+            "description": "𝚄𝙿𝙻𝙾𝙰𝙳𝙴𝙳 𝚄𝚂𝙸𝙽𝙶 𝙰𝚆𝙰𝙽 𝙼𝙸𝚁𝚁𝙾𝚁 𝙱𝙾𝚃",
             "mimeType": self.__G_DRIVE_DIR_MIME_TYPE
         }
         if parent_id is not None:
